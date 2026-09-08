@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-browser-automation"
+version = "0.1.0"
+description = "Agent-facing, workflow-driven browser automation"
+readme = "README.md"
+requires-python = ">=3.11,<3.15"
+dependencies = [
+  "mcp[cli]>=1.27,<2",
+  "playwright>=1.52,<2",
+  "pydantic>=2.10,<3",
+  "pydantic-settings>=2.7,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8,<9",
+  "pytest-asyncio>=0.25,<2",
+  "pyright>=1.1,<2",
+  "ruff>=0.9,<1",
+]
+
+[project.scripts]
+agent-browser-automation = "agent_browser_automation.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
+
+[tool.pyright]
+include = ["src", "tests"]
+pythonVersion = "3.11"
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"

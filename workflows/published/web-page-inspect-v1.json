@@ -1,0 +1,43 @@
+{
+  "id": "web.page.inspect.openmetadata.v1",
+  "version": 1,
+  "status": "published",
+  "capability": "web.page.inspect",
+  "risk": "readonly",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "url": {"type": "string"},
+      "expected_title": {"type": "string"}
+    },
+    "required": ["url", "expected_title"],
+    "additionalProperties": false
+  },
+  "allowed_origins": ["http://localhost:8585"],
+  "targets": {},
+  "steps": [
+    {
+      "id": "navigate",
+      "action": {
+        "type": "navigate",
+        "url": "${input.url}"
+      }
+    },
+    {
+      "id": "assert-title",
+      "action": {
+        "type": "assert",
+        "assertion": {
+          "type": "title_contains",
+          "value": "${input.expected_title}"
+        }
+      }
+    },
+    {
+      "id": "observe",
+      "action": {
+        "type": "observe"
+      }
+    }
+  ]
+}

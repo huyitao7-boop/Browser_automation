@@ -1,0 +1,61 @@
+{
+  "id": "web.session.inspect.openmetadata.v1",
+  "version": 1,
+  "status": "published",
+  "capability": "web.session.inspect",
+  "risk": "readonly",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "url": {"type": "string"}
+    },
+    "required": ["url"],
+    "additionalProperties": false
+  },
+  "allowed_origins": ["http://localhost:8585"],
+  "targets": {
+    "authenticated.home-link": {
+      "region": "sidebar",
+      "strategies": [
+        {"kind": "css", "value": "a[href=\"/my-data\"]"}
+      ],
+      "expected_control": "link"
+    }
+  },
+  "steps": [
+    {
+      "id": "navigate",
+      "action": {
+        "type": "navigate",
+        "url": "${input.url}"
+      }
+    },
+    {
+      "id": "assert-not-signin",
+      "action": {
+        "type": "assert",
+        "assertion": {
+          "type": "url_not_matches",
+          "value": "*/signin*",
+          "stability_ms": 2000
+        }
+      }
+    },
+    {
+      "id": "assert-authenticated-shell",
+      "action": {
+        "type": "assert",
+        "assertion": {
+          "type": "target_visible",
+          "targetRef": "authenticated.home-link"
+        }
+      }
+    },
+    {
+      "id": "observe",
+      "action": {
+        "type": "observe"
+      }
+    }
+  ]
+}
